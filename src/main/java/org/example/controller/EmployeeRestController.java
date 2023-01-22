@@ -22,18 +22,14 @@ public class EmployeeRestController {
     @GetMapping("/{id}")
     public ResponseEntity<Employee> getEmployeeById(@PathVariable Long id) {
         final Employee employee = db.getEmployeeById(id);
-        return employee != null
-                ? new ResponseEntity<>(employee, HttpStatus.OK)
-                : new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(employee, HttpStatus.OK);
     }
 
     @PostMapping()
     public ResponseEntity<Employee> addEmployee(@RequestBody Employee employee) {
-        final boolean added = db.addEmployee(employee);
+        db.addEmployee(employee);
 
-        return added
-                ? new ResponseEntity<>(employee, HttpStatus.CREATED)
-                : new ResponseEntity<>(HttpStatus.IM_USED);
+        return new ResponseEntity<>(employee, HttpStatus.CREATED);
     }
 
     @GetMapping()

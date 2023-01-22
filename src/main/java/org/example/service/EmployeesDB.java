@@ -12,25 +12,24 @@ public class EmployeesDB {
 
     private final TreeMap<Long, Employee> DATA = new TreeMap<>();
 
-    public boolean addEmployee(Employee employee) {
+    public void addEmployee(Employee employee) {
+        if (employee.getId() != null) {
+            throw new AppException("Невозможно добавить работника с уже имеющимся id");
+        }
         if (employee.getId() == null && DATA.isEmpty()) {
             Long id = 1L;
             employee.setId(id);
             DATA.put(id, employee);
-            return true;
         } if (employee.getId() == null && !DATA.isEmpty()) {
             employee.setId(DATA.lastKey() + 1);
-            return true;
-        } else {
-            return false;
         }
     }
 
     public Employee getEmployeeById(Long id) {
-        try {
-            return DATA.get(id);
-        } catch (Exception e) {
+        if (DATA.get(id) == null) {
             throw new AppException(String.format("Пользователя с id %s не существует", id));
+        } else {
+            return DATA.get(id);
         }
     }
 
